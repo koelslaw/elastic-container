@@ -126,7 +126,6 @@ Populating Fleet Settings
 READY SET GO!
 
 Browse to https://localhost:5601
-
 ```
 After a few minutes, when prompted, browse to https://localhost:5601 and log in with your configured credentials.
 
