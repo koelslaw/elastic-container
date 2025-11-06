@@ -46,7 +46,7 @@ check_required_apps() {
 # Create the script usage menu
 usage() {
   cat <<EOF | sed -e 's/^  //'
-  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|help)
+  usage: ./elastic-container.sh [-v] (stage|start|stop|restart|status|custom|help)
   actions:
     stage     downloads all necessary images to local storage
     start     creates a container network and starts containers
@@ -54,6 +54,7 @@ usage() {
     destroy   stops and removes the containers, the network, and volumes created
     restart   restarts all the stack containers
     status    check the status of the stack containers
+    custom    start only the stuff you want using the service name (elasticsearch, kibana, fleet-server)
     clear     clear all documents in logs and metrics indexes
     help      print this message
   flags:
@@ -206,7 +207,8 @@ shift $((OPTIND - 1))
 
 [ "${1:-}" = "--" ] && shift
 
-ACTION="${*:-help}"
+ACTION="${1:-help}"
+shift || true
 
 if [ $verbose -eq 1 ]; then
   exec 3<>/dev/stderr
@@ -243,7 +245,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers."
 
-  ${COMPOSE} up -d --no-deps "$@"
+  ${COMPOSE} up -d --no-deps
 
   configure_kbn 1>&2 2>&3
 
@@ -269,14 +271,22 @@ case "${ACTION}" in
 "stop")
   echo "Stopping running containers."
 
-  ${COMPOSE} stop "$@"
+  ${COMPOSE} stop 
   ;;
 
 "destroy")
   echo "#####"
   echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
-  ${COMPOSE} down -v "$@"
+  ${COMPOSE} down -v 
+  ;;
+
+"custom")
+  echo "#####"
+  echo "Lanching Custom Setup"
+  echo "#####"
+  # pass in the service names that you want to start
+  ${COMPOSE} up -d --no-deps "$@"
   ;;
 
 "restart")
