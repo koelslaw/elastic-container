@@ -214,6 +214,8 @@ else
   exec 3<>/dev/null
 fi
 
+
+
 if docker compose >/dev/null; then
   COMPOSE="docker compose"
 elif command -v docker-compose >/dev/null; then
@@ -241,7 +243,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers."
 
-  ${COMPOSE} up -d --no-deps 
+  ${COMPOSE} up -d --no-deps "$@"
 
   configure_kbn 1>&2 2>&3
 
@@ -267,14 +269,14 @@ case "${ACTION}" in
 "stop")
   echo "Stopping running containers."
 
-  ${COMPOSE} stop 
+  ${COMPOSE} stop "$@"
   ;;
 
 "destroy")
   echo "#####"
   echo "Stopping and removing the containers, network, and volumes created."
   echo "#####"
-  ${COMPOSE} down -v
+  ${COMPOSE} down -v "$@"
   ;;
 
 "restart")
