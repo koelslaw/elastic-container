@@ -289,8 +289,8 @@ case "${ACTION}" in
 
   get_host_ip
 
-  echo "Starting Elastic Stack network and containers."
-  ${COMPOSE} up -d --no-deps "$@"
+  echo "Starting Custom Elastic Stack network and containers."
+  ${COMPOSE} up -d "$@"
   sleep 5
     for arg in "$@"; do
       case "$arg" in
