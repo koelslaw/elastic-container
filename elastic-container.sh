@@ -282,12 +282,35 @@ case "${ACTION}" in
   ;;
 
 "custom")
-  echo "#####"
-  echo "Lanching Custom Setup"
-  echo "#####"
-  # pass in the service names that you want to start
-  ${COMPOSE} up -d --no-deps "$@"
-  ;;
+    echo "#####"
+    echo "Launching Custom Setup"
+    echo "#####"
+    for arg in "$@"; do
+      case "$arg" in
+        elasticsearch")
+          echo "Running config for Kibana service..."
+          ${COMPOSE} up -d --no-deps elasticsearch
+          ;;
+        "kibana")
+          echo "Running config for Kibana service..."
+          ${COMPOSE} up -d --no-deps kibana
+          configure_kbn 1>&2 2>&3
+          ;;
+        "fleet-server")
+          echo "Running config for Fleet service..."
+          ${COMPOSE} up -d --no-deps fleet-server
+          set_fleet_values
+          ;;
+        *)
+          echo "⚠️  Unknown custom option: $arg"
+          ;;
+      esac
+    done
+    ;;
+  
+  *)
+    echo "Unknown option: $1"
+    ;;
 
 "restart")
   echo "#####"
