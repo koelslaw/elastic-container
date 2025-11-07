@@ -153,6 +153,7 @@ get_host_ip() {
 }
 
 set_fleet_values() {
+  echo "setting fleet values"
   # Get the current Fleet settings
   CURRENT_SETTINGS=$(curl -k -s -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${LOCAL_KBN_URL}/api/fleet/agents/setup" -H "Content-Type: application/json")
 
@@ -282,12 +283,14 @@ case "${ACTION}" in
   ;;
 
 "custom")
-    echo "#####"
-    echo "Launching Custom Setup"
-    echo "#####"
-    get_host_ip
-    passphrase_reset
-    ${COMPOSE} up -d "$@"
+  passphrase_reset
+
+  check_required_apps
+
+  get_host_ip
+
+  echo "Starting Elastic Stack network and containers."
+  ${COMPOSE} up -d --no-deps "$@"
     for arg in "$@"; do
       case "$arg" in
         "kibana")
