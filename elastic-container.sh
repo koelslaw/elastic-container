@@ -295,13 +295,11 @@ case "${ACTION}" in
           ${COMPOSE} up -d --no-deps elasticsearch
           ;;
         "kibana")
-          echo "Running config for Kibana service..."
           ${COMPOSE} up -d --no-deps kibana
           echo "Waiting for kibana to start..."
-          
           sleep 40
-          
-          configure_kbn
+          echo "Running config for Kibana service..."
+          # configure_kbn
           echo "Kibana Configured..."
           ;;
         "fleet-server")
