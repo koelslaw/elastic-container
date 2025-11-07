@@ -307,7 +307,7 @@ case "${ACTION}" in
           ;;
         "fleet-server")
           echo "Running config for Fleet service..."
-          set_fleet_values/dev/null 2>&1
+          set_fleet_values > /dev/null 2>&1
           sleep 10
           ;;
         *)
