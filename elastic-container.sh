@@ -287,24 +287,18 @@ case "${ACTION}" in
     echo "#####"
     get_host_ip
     passphrase_reset
-
+    ${COMPOSE} up -d "$@"
     for arg in "$@"; do
       case "$arg" in
-        "elasticsearch")
-          echo "Running config for ES service..."
-          ${COMPOSE} up -d --no-deps elasticsearch
-          ;;
         "kibana")
-          ${COMPOSE} up -d --no-deps kibana
           echo "Waiting for kibana to start..."
           sleep 40
           echo "Running config for Kibana service..."
-          # configure_kbn
+          configure_kbn
           echo "Kibana Configured..."
           ;;
         "fleet-server")
           echo "Running config for Fleet service..."
-          ${COMPOSE} up -d --no-deps fleet-server
           set_fleet_values
           sleep 10
           ;;
