@@ -153,7 +153,6 @@ get_host_ip() {
 }
 
 set_fleet_values() {
-  echo "setting fleet values"
   # Get the current Fleet settings
   CURRENT_SETTINGS=$(curl -k -s -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${LOCAL_KBN_URL}/api/fleet/agents/setup" -H "Content-Type: application/json")
 
@@ -303,12 +302,12 @@ case "${ACTION}" in
           echo "Waiting for kibana to start..."
           sleep 40
           echo "Running config for Kibana service..."
-          configure_kbn
+          configure_kbn 1>&2 2>&3
           echo "Kibana Configured..."
           ;;
         "fleet-server")
           echo "Running config for Fleet service..."
-          set_fleet_values
+          set_fleet_values/dev/null 2>&1
           sleep 10
           ;;
         *)
@@ -316,6 +315,15 @@ case "${ACTION}" in
           ;;
       esac
     done
+  echo "READY SET GO!"
+  echo
+  echo "Browse to https://localhost:${KIBANA_PORT}"
+  if [ $verbose -eq 1 ]; then
+      echo "Username: ${ELASTIC_USERNAME}"
+      echo "Passphrase: ${ELASTIC_PASSWORD}"
+  fi
+  echo
+  ;;
     ;;
   
   *)
