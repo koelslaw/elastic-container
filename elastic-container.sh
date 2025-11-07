@@ -285,16 +285,24 @@ case "${ACTION}" in
     echo "#####"
     echo "Launching Custom Setup"
     echo "#####"
+    get_host_ip
+    passphrase_reset
+
     for arg in "$@"; do
       case "$arg" in
         "elasticsearch")
-          echo "Running config for Kibana service..."
+          echo "Running config for ES service..."
           ${COMPOSE} up -d --no-deps elasticsearch
           ;;
         "kibana")
           echo "Running config for Kibana service..."
           ${COMPOSE} up -d --no-deps kibana
+          echo "Waiting for kibana to start..."
+          
+          sleep 40
+          
           configure_kbn 1>&2 2>&3
+          echo "Kibana Configured..."
           ;;
         "fleet-server")
           echo "Running config for Fleet service..."
