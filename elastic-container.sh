@@ -294,6 +294,11 @@ case "${ACTION}" in
   sleep 5
     for arg in "$@"; do
       case "$arg" in
+        "elasticsearch")
+          echo "Running config Security Setup..."
+          ${COMPOSE} up -d setup
+          sleep 10
+          ;;
         "kibana")
           echo "Waiting for kibana to start..."
           sleep 40
