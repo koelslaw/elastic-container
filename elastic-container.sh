@@ -291,6 +291,7 @@ case "${ACTION}" in
 
   echo "Starting Elastic Stack network and containers."
   ${COMPOSE} up -d --no-deps "$@"
+  sleep 5
     for arg in "$@"; do
       case "$arg" in
         "kibana")
