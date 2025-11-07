@@ -287,7 +287,7 @@ case "${ACTION}" in
     echo "#####"
     for arg in "$@"; do
       case "$arg" in
-        elasticsearch")
+        "elasticsearch")
           echo "Running config for Kibana service..."
           ${COMPOSE} up -d --no-deps elasticsearch
           ;;
