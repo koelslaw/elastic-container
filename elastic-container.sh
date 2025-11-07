@@ -324,8 +324,7 @@ case "${ACTION}" in
   fi
   echo
   ;;
-    ;;
-  
+
   *)
     echo "Unknown option: $1"
     ;;
