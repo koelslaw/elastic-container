@@ -301,13 +301,14 @@ case "${ACTION}" in
           
           sleep 40
           
-          configure_kbn 1>&2 2>&3
+          configure_kbn
           echo "Kibana Configured..."
           ;;
         "fleet-server")
           echo "Running config for Fleet service..."
           ${COMPOSE} up -d --no-deps fleet-server
           set_fleet_values
+          sleep 10
           ;;
         *)
           echo "⚠️  Unknown custom option: $arg"
